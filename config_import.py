@@ -23,11 +23,9 @@ except:
 posts_url = config.get('Auth', 'posts_url')
 basic_auth = config.get('Auth', 'basic_auth')
 
+# [Post]
+default_status = config.get('Post', 'default_status')
+
 # [Logging]
 logging_level = config.get('Logging', 'logging_level')
 log_file = config.get('Logging', 'log_file')
-
-# print(homedir_path)
-# print(config_file)
-# print(posts_url)
-# print(basic_auth)

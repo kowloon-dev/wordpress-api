@@ -8,11 +8,13 @@ import requests
 import log_control
 import traceback
 import argparse
+import parse_article
 
 # Get configuration parameters
 try:
     posts_url = ci.posts_url
     basic_auth = ci.basic_auth
+    default_status = ci.default_status
 except:
     err = "Read config failed.\n"
     log_control.logging.error(traceback.format_exc())
@@ -29,15 +31,15 @@ parser.add_argument('filename', \
                     type= str, \
                     help='Define your filename to be posted')
 
-# Define option handling "published" or "draft" status
+# Define option handling "publish" or "draft" status
 # each options are included in mutually exclusive group
-mgroup = parser.add_mutually_exclusive_group(required= True)
+mgroup = parser.add_mutually_exclusive_group(required= False)
 
-mgroup.add_argument('-p', '--published', \
+mgroup.add_argument('-p', '--publish', \
                     action= 'store_const', \
                     const= True, \
                     default= False, \
-                    help='Post the article with "published" status.')
+                    help='Post the article with "publish" status.')
 
 mgroup.add_argument('-d', '--draft', \
                     action='store_const', \
@@ -48,38 +50,55 @@ mgroup.add_argument('-d', '--draft', \
 # Apply parser
 args = parser.parse_args()
 
-# Get options/parameters
+# Get option and parameters
 file = args.filename
-flag_published = args.published
+flag_publish = args.publish
 flag_draft = args.draft
 
-#print(file)
-#print(flag_published)
-#print(flag_draft)
-#print(os.getcwd())
+# Check the existence of file
+if os.path.exists(file) is False:
+    log_control.logging.error('Filename "' + file + '" does not exist.\
+    Please verify filename and existence.')
+    raise
 
-# ファイルのパースを外だしのクラスにするか要検討
-# Create instance for parsing article
-#ps = ParseArticle()
-#
-# Execute parsing article
-#ps.parse_article(file)
+# Create instance for parsing article and execute
+pa = parse_article.ParseArticle()
+try:
+    parse_result = pa.parse_article(file)
+except:
+    log_control.logging.error('Parsing file failed.')
+    raise
 
-f = open(file, 'r', encoding='utf-8')
-article_body = f.read()
-print(article_body)
-f.close()
+article_id = parse_result[0]
+article_title = parse_result[1]
+article_body = parse_result[2]
 
+if flag_publish == True:
+    status = "publish"
+elif flag_draft == True:
+    status = "draft"
+else:
+    status = default_status
 
-# Gef filename which is used for article title on WordPress
-filename = os.path.basename(file)
-article_title = os.path.splitext(filename)
+# Build request payload
+payload_str = '{"status": "' + status + '"'
+payload_str = payload_str + ', "title": "' + article_title + '"'
+payload_str = payload_str + ', "content": ' + article_body
 
+if article_id is not False:
+    payload_str = payload_str + ', "id": ' + str(article_id)
+
+payload_str = payload_str + '}'
+
+print(payload_str)
+
+exit()
 
 payload = {"status": "publish", "title": article_title, "content": article_body,}
 
 headers = {'Content-Type': 'Application/json',
            'Authorization': basic_auth}
+
 r = requests.post(posts_url, data=json.dumps(payload), headers=headers)
 
 print(r.json())
