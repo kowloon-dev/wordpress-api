@@ -142,7 +142,10 @@ except:
     log_control.logging.error('Update article file failed.')
     exit(99)
 
+# Show result messages to user.
 print('POST action has succeeded.')
 print('id : ' + article_id)
-print('link : ' + link)
 print('title : ' + article_title)
+print('link : ' + link)
+
+exit(0)
