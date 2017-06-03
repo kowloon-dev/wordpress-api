@@ -11,7 +11,7 @@ Python Scripts posting/updating your article with WordPress REST API v2.
 
 - POST article to your WordPress website with REST API over HTTPS.
 - Automatically handle whether "New post" or "Update post".
-- If the case "New post", this script will ask you to choose categories regardig article.
+- If the case "New post", this script will ask you to choose categories regarding the article.
 
 ## Requirement
 
@@ -77,7 +77,7 @@ After POST process has finished, this script adds `management information`(assig
 2. To update your articles:
 
 ```
-post.py -p How_to_use.md
+kowloon$ post.py -p "How to use this script.md"
 ```
 
 This script always reads the 1st line of your local article file and search "article_id" json code section.
