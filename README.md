@@ -51,7 +51,7 @@ status_option:
 Status option is NOT mandatory, you can handle "default status" in `wp-api.ini` file.
 If you don't designate status option in CLI, scripts obey "default status".
 
-If this is the 1st time you post this article, you'll be asked which category do you correlate.
+If this is the 1st time you post this article, you'll be asked which category do you correlate with.
 
 Example:
 
@@ -90,11 +90,22 @@ In the case "Update", the script will not ask you category id again.
 
 1. Clone repository
 
-    $ git clone git@github.com:kowloon-dev/wordpress-api.git
+```
+$ git clone git@github.com:kowloon-dev/wordpress-api.git
+```
 
-1. Copy .ini file to your home directory.
+1. Copy .ini and log file to your home directory.
+
+```
+$ copy wordpress-api/files/wp-api.* ~/
+```
 
 1. Add a path `wordpress-api.git/post.py` to your $PATH.
+
+```
+$ echo "export PATH=$PATH:/Users/kowloon/wordpress-api" >> ~/.bash_profile
+$ source ~/.bash_profile
+```
 
 1. Install [JP Markdown ](https://wordpress.org/plugins/jetpack-markdown/) plugin on your WordPress site.
 
