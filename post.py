@@ -130,8 +130,10 @@ except:
 # Parse POST response
 post_response = post_response.json()
 article_id = str(post_response['id'])
+article_title = str(post_response['title']['rendered'])
 post_date = str(post_response['date'])
 link = str(post_response['link'])
+
 
 # Update 1st line in article
 try:
@@ -139,3 +141,8 @@ try:
 except:
     log_control.logging.error('Update article file failed.')
     exit(99)
+
+print('POST action has succeeded.')
+print('id : ' + article_id)
+print('link : ' + link)
+print('title : ' + article_title)
