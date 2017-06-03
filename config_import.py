@@ -20,11 +20,16 @@ except:
 # ------------  Import parameters from config file  ------------
 
 # [Auth]
-posts_url = config.get('Auth', 'posts_url')
+base_url = config.get('Auth', 'base_url')
 basic_auth = config.get('Auth', 'basic_auth')
 
 # [Post]
 default_status = config.get('Post', 'default_status')
+
+# [Category]
+cat_default_id = config.get('Category', 'default_id')
+cat_sort_key =  config.get('Category', 'sort_key')
+cat_sort_reverse = config.get('Category', 'sort_reverse')
 
 # [Logging]
 logging_level = config.get('Logging', 'logging_level')
